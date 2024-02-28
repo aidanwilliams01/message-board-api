@@ -3,6 +3,7 @@ using System;
 using MessageBoardApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MessageBoardAPI.Migrations
 {
     [DbContext(typeof(MessageBoardApiContext))]
-    partial class MessageBoardApiContextModelSnapshot : ModelSnapshot
+    [Migration("20240227005721_AddMoreData")]
+    partial class AddMoreData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,6 +48,27 @@ namespace MessageBoardAPI.Migrations
                         {
                             MessageId = 1,
                             MessageDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            MessageId = 2,
+                            Group = "Group 1",
+                            MessageDateTime = new DateTime(2024, 2, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Text = "example text"
+                        },
+                        new
+                        {
+                            MessageId = 3,
+                            Group = "Group 2",
+                            MessageDateTime = new DateTime(2023, 2, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Text = "example text"
+                        },
+                        new
+                        {
+                            MessageId = 4,
+                            Group = "Group 3",
+                            MessageDateTime = new DateTime(2022, 2, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Text = "example text"
                         });
                 });
 #pragma warning restore 612, 618
