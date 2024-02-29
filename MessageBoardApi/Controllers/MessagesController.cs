@@ -65,53 +65,65 @@ namespace MessageBoardApi.Controllers
     //   return await groups.ToListAsync();
     // }
 
-    // [HttpPut("{id}")]
-    // public async Task<IActionResult> Put(int id, Message message)
-    // {
-    //   if (id != message.MessageId)
-    //   {
-    //     return BadRequest();
-    //   }
+    [HttpPut("{id}/{userName}")]
+    public async Task<IActionResult> Put(int id, string userName, Message message)
+    {
+      if (id != message.MessageId)
+      {
+        return BadRequest();
+      }
 
-    //   _db.Messages.Update(message);
+      Message messageToModify = await _db.Messages.FindAsync(id);
+      if (userName != messageToModify.UserName)
+      {
+        return BadRequest();
+      }
+      
+      _db.ChangeTracker.Clear();
+      _db.Messages.Update(message);
 
-    //   try
-    //   {
-    //     await _db.SaveChangesAsync();
-    //   }
-    //   catch (DbUpdateConcurrencyException)
-    //   {
-    //     if (!MessageExists(id))
-    //     {
-    //       return NotFound();
-    //     }
-    //     else
-    //     {
-    //       throw;
-    //     }
-    //   }
+      try
+      {
+        await _db.SaveChangesAsync();
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (!MessageExists(id))
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
 
-    //   return NoContent();
-    // }
+      return NoContent();
+    }
 
-    // private bool MessageExists(int id)
-    // {
-    //   return _db.Messages.Any(e => e.MessageId == id);
-    // }
+    private bool MessageExists(int id)
+    {
+      return _db.Messages.Any(e => e.MessageId == id);
+    }
 
-    // [HttpDelete("{id}")]
-    // public async Task<IActionResult> DeleteMessage(int id)
-    // {
-    //   Message message = await _db.Messages.FindAsync(id);
-    //   if (message == null)
-    //   {
-    //     return NotFound();
-    //   }
+    [HttpDelete("{id}/{userName}")]
+    public async Task<IActionResult> DeleteMessage(int id, string userName)
+    {
+      Message message = await _db.Messages.FindAsync(id);
+      if (message == null)
+      {
+        return NotFound();
+      }
 
-    //   _db.Messages.Remove(message);
-    //   await _db.SaveChangesAsync();
+      if (userName != message.UserName)
+      {
+        return BadRequest();
+      }
 
-    //   return NoContent();
-    // }
+      _db.Messages.Remove(message);
+      await _db.SaveChangesAsync();
+
+      return NoContent();
+    }
   }
 }
